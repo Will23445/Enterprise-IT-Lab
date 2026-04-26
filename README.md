@@ -37,4 +37,18 @@ Ho usato un server Linux senza interfaccia grafica (a riga di comando) per ospit
 * **Sito:** Ho installato Nginx per far funzionare la pagina web interna.
 
 ## 4. Monitoraggio della Rete
-Per controllare che tutto funzioni bene, ho installato il software **OpManager** sul PC Windows 11, usandolo come se fosse la postazione dell'amministratore di rete. Ho aggiunto i server alla dashboard per monitorare se rispondono ai Ping (ICMP) e se
+Per controllare che tutto funzioni bene, ho installato il software **OpManager** sul PC Windows 11, usandolo come se fosse la postazione dell'amministratore di rete. Ho aggiunto i server alla dashboard per monitorare se rispondono ai Ping (ICMP) e se la porta del sito web (TCP) è aperta.
+
+### Test di Allarme sul Server Web
+Per dimostrare che il monitoraggio funziona, ho fatto un test pratico:
+1. **Problema:** Dal terminale di Ubuntu, ho spento di proposito il servizio del sito web usando il comando `sudo systemctl stop nginx`.
+2. **Risultato:** Dopo pochi minuti, la dashboard di OpManager su Windows 11 ha fatto comparire un allarme critico (rosso) per avvisare che il sito non era più raggiungibile.
+3. **Soluzione:** Ho riattivato Nginx e l'allarme su OpManager è tornato verde da solo.
+
+## 5. File presenti nel Repository
+* `/scripts/Create-AdUsers.ps1`: Il mio script in PowerShell per importare gli utenti.
+* `/data/utenti.csv`: Il file di testo con i dati dei dipendenti finti.
+* `/images/`: Qui ci sono gli screenshot del lavoro finito (Active Directory, allarme su OpManager e terminale di Ubuntu).
+
+## 6. Conclusioni
+Questo progetto mi è servito per capire come i sistemi operativi diversi (Windows e Linux) possono comunicare e lavorare insieme nella stessa rete. Ho anche imparato quanto è importante usare gli script per fare meno lavoro manuale e usare i software di monitoraggio per accorgersi subito se c'è un problema.
