@@ -1,54 +1,115 @@
-# Progetto di Laboratorio IT: Rete Aziendale con Windows Server e Linux
+*Looking for the Italian version? [Click here to read the README in Italian](./README_IT.md)*
 
-## 1. Panoramica del Progetto
-Questo repository contiene il mio progetto personale in cui ho simulato da zero la rete informatica di una piccola azienda. L'obiettivo era mettere in pratica quello che ho studiato, creando una rete mista con server Windows e macchine Linux. 
+---
 
-Mi sono concentrato sulla gestione centralizzata degli utenti tramite Active Directory, sulla creazione automatica degli account usando uno script e sul monitoraggio per controllare che i server siano sempre accesi e funzionanti.
+# IT Lab Project: Corporate Network with Windows Server and Linux
 
-Ho usato **Oracle VirtualBox** per creare tutte le macchine virtuali e le ho collegate tra loro usando una rete NAT (Network Address Translation) per simulare la LAN dell'azienda.
+## 1. Project Overview
+This repository contains my personal project where I simulated a small company IT network from scratch. The main goal was to put into practice what I studied, creating a mixed network environment with Windows and Linux servers. 
 
-## 2. Architettura di Rete
-La rete usa la sottorete `10.0.2.0/24` e il gateway è `10.0.2.1`. Ho assegnato un indirizzo IP statico a ogni server per far sì che si trovino sempre all'interno della rete.
+I focused on centralized user management through Active Directory, automatic account creation using scripts, automated software deployment, file sharing, and continuous monitoring. Furthermore, I implemented advanced security protocols for local administrator accounts and successfully executed a cross-hypervisor migration of the entire infrastructure.
 
-| Nome Computer | Indirizzo IP | Sistema Operativo | A cosa serve |
+Initially, I used Oracle VirtualBox to build the environment on a NAT network. Later, I migrated the entire laboratory to VMware Workstation Pro to test an enterprise-grade hypervisor.
+
+## 2. Network Architecture
+The network uses the 10.0.2.0/24 subnet, simulating the local LAN of the "ACME Corp" company. I assigned a static IP address to each server to ensure they are always reachable.
+
+| Computer Name | IP Address | Operating System | Purpose |
 | :--- | :--- | :--- | :--- |
-| **SRV-DC01** | `10.0.2.10` | Windows Server 2022 | Domain Controller, Server DNS e Active Directory |
-| **SRV-WEB01** | `10.0.2.11` | Ubuntu Server 24.04 | Server Web (Nginx) per la pagina interna dell'azienda |
-| **CLIENT-W11** | `10.0.2.50` | Windows 11 Pro | PC del dipendente e postazione per monitorare la rete |
+| **SRV-DC01** | 10.0.2.10 | Windows Server 2022 | Domain Controller, DNS Server, and Active Directory |
+| **SRV-WEB01** | 10.0.2.11 | Ubuntu Server 24.04 | Web Server (Nginx) for the internal company page |
+| **CLIENT-W11** | 10.0.2.50 | Windows 11 Pro | Employee PC and network monitoring station |
 
-## 3. Lavori svolti sui Server
+## 3. Server Configurations
 
-### 3.1 Windows Server (Dominio e DNS)
-Ho configurato il server Windows principale come **Domain Controller** per creare il dominio `acmecorp.local`. 
-* **DNS:** Ho impostato il server DNS locale. Per permettere ai computer della rete di navigare su Internet, ho aggiunto degli Inoltratori (Forwarders) che puntano ai server DNS di Google (8.8.8.8).
-* **Active Directory:** Ho creato e gestito gli utenti e i computer direttamente dal server.
+### 3.1 Windows Server (Domain and DNS)
+I configured the main Windows server as a Domain Controller to create the acmecorp.local domain. 
+* **DNS:** I set up the local DNS server. To allow computers on the network to browse the internet, I added Forwarders pointing to Google's DNS servers (8.8.8.8).
+* **Active Directory:** I created and managed users and computers directly from the server.
 
-### 3.2 Script in PowerShell per gli Utenti
-Invece di creare gli utenti a mano uno per uno, ho scritto uno script in PowerShell (`Create-AdUsers.ps1`). Lo script funziona così:
-* Legge i nomi e i cognomi dei dipendenti da un file `.csv`.
-* Crea in automatico l'account utente (prendendo l'iniziale del nome e il cognome).
-* Assegna una password temporanea generica.
-* Attiva l'impostazione che obbliga il dipendente a cambiare la password al suo primo accesso su Windows 11, per motivi di sicurezza.
+### 3.2 PowerShell Script for Users
+Instead of creating users manually one by one, I wrote a PowerShell script (Create-AdUsers.ps1). The script works like this:
+* It reads the first names and last names of the employees from a .csv file.
+* It automatically creates the user account (using the first letter of the name and the full last name).
+* It assigns a generic temporary password.
+* It enables the setting that forces the employee to change the password at their first login on Windows 11, for security reasons.
 
-### 3.3 Server Web Linux (Ubuntu)
-Ho usato un server Linux senza interfaccia grafica (a riga di comando) per ospitare il sito web dell'azienda.
-* **Rete:** Ho impostato l'IP statico modificando i file di configurazione di Netplan.
-* **Firewall:** Ho attivato il firewall UFW per lasciare aperta solo la porta 80, quella che serve per il sito web.
-* **Sito:** Ho installato Nginx per far funzionare la pagina web interna.
+### 3.3 Linux Web Server (Ubuntu)
+I used a Linux server without a graphical user interface (command line only) to host the company website.
+* **Network:** I set the static IP by modifying the Netplan configuration files.
+* **Firewall:** I enabled the UFW firewall to keep only port 80 open, which is required for the website.
+* **Website:** I installed Nginx to run the internal web page.
 
-## 4. Monitoraggio della Rete
-Per controllare che tutto funzioni bene, ho installato il software **OpManager** sul PC Windows 11, usandolo come se fosse la postazione dell'amministratore di rete. Ho aggiunto i server alla dashboard per monitorare se rispondono ai Ping (ICMP) e se la porta del sito web (TCP) è aperta.
+## 4. Corporate Infrastructure Management
 
-### Test di Allarme sul Server Web
-Per dimostrare che il monitoraggio funziona, ho fatto un test pratico:
-1. **Problema:** Dal terminale di Ubuntu, ho spento di proposito il servizio del sito web usando il comando `sudo systemctl stop nginx`.
-2. **Risultato:** Dopo pochi minuti, la dashboard di OpManager su Windows 11 ha fatto comparire un allarme critico (rosso) per avvisare che il sito non era più raggiungibile.
-3. **Soluzione:** Ho riattivato Nginx e l'allarme su OpManager è tornato verde da solo.
+### 4.1 File Server and Network Drive (Drive Z:)
+To provide employees with a centralized and secure place to save their work, I configured a File Server.
+* **Shared Folder:** I created a folder named Dati_Aziendali on the Server and shared it.
+* **NTFS Permissions:** I assigned "Modify" permissions to the Domain Users group. This ensures only authenticated employees can access and modify these files.
+* **Drive Mapping:** I used a Group Policy Object (GPO) so that when a user logs into Windows 11, the shared folder automatically appears as Drive Z: in "This PC".
 
-## 5. File presenti nel Repository
-* `/scripts/Create-AdUsers.ps1`: Il mio script in PowerShell per importare gli utenti.
-* `/data/utenti.csv`: Il file di testo con i dati dei dipendenti finti.
-* `/images/`: Qui ci sono gli screenshot del lavoro finito (Active Directory, allarme su OpManager e terminale di Ubuntu).
+<details>
+<summary>Click to expand GPO details for Drive Mapping</summary>
 
-## 6. Conclusioni
-Questo progetto mi è servito per capire come i sistemi operativi diversi (Windows e Linux) possono comunicare e lavorare insieme nella stessa rete. Ho anche imparato quanto è importante usare gli script per fare meno lavoro manuale e usare i software di monitoraggio per accorgersi subito se c'è un problema.
+* GPO Path: User Configuration > Preferences > Windows Settings > Drive Maps
+* Action: Create
+* Location: \\SRV-DC01\Dati_Aziendali
+* Drive Letter: Z:
+</details>
+
+### 4.2 Automatic Software Deployment
+To avoid installing programs manually on every client, I automated the process.
+* I created a shared folder called Deploy_Software on the Server and placed the 7-Zip.msi installer inside.
+* I configured a GPO (Computer Configuration > Policies > Software Settings) linked to the computers. When the Windows 11 PC boots up, it automatically installs 7-Zip over the network before the user reaches the desktop.
+
+### 4.3 Advanced Security: LAPS
+To prevent hacker attacks that exploit standard local administrator passwords, I implemented LAPS (Local Administrator Password Solution). LAPS generates a random, complex password for every PC and stores it securely in Active Directory.
+
+* **Version Conflict Resolution:** Windows 11 has a modern "Native LAPS", while Server 2022 uses the older "Legacy" system. I resolved this mismatch by configuring the local policy on Windows 11 to force communication with the Active Directory backup directory.
+* **Account Activation:** Since Windows 11 disables the local Administrator account by default, I created a specific GPO on the Server to enable it, making the LAPS password actually usable in an emergency.
+
+<details>
+<summary>Click to expand LAPS technical configuration steps</summary>
+
+1. Active Directory Preparation: Ran Update-AdmPwdADSchema and Set-AdmPwdComputerSelfPermission via PowerShell on the Server.
+2. Enable Local Admin (Server GPO): Computer Configuration > Policies > Windows Settings > Security Settings > Local Policies > Security Options > Accounts: Administrator account status set to Enabled.
+3. Local Policy (Windows 11): Computer Configuration > Administrative Templates > System > LAPS > Configure password backup directory set to Active Directory.
+</details>
+
+## 5. Network Monitoring and Testing
+
+### 5.1 OpManager Monitoring
+To check that everything runs smoothly, I installed the OpManager software on the Windows 11 PC, using it as the network administrator station. I added the servers to the dashboard to monitor if they respond to Pings (ICMP) and if the website port (TCP) is open.
+
+**Web Server Alarm Test:**
+To prove the monitoring works, I did a practical test:
+1. **Problem:** From the Ubuntu terminal, I intentionally stopped the website service using the command sudo systemctl stop nginx.
+2. **Result:** After a few minutes, the OpManager dashboard on Windows 11 showed a critical red alarm warning that the site was unreachable.
+3. **Solution:** I restarted Nginx, and the alarm on OpManager turned green automatically.
+
+### 5.2 Offline Disaster Recovery Test
+To verify the LAPS configuration, I performed a disaster simulation:
+1. I disconnected the network adapter of the Windows 11 client.
+2. I retrieved the generated password from the LAPS UI application on the Server.
+3. I logged into the offline Windows 11 PC using the local .\Administrator account and the LAPS password.
+4. The login was successful, proving I can maintain administrative access even when the Domain Controller is completely unreachable.
+
+## 6. Cross-Hypervisor Migration (VirtualBox to VMware)
+To upgrade the laboratory environment, I successfully migrated all virtual machines from Oracle VirtualBox to VMware Workstation Pro. 
+
+This required careful preparation to prevent hardware conflicts (such as BSODs on Windows or Kernel Panics on Linux) and network issues (Ghost NICs).
+
+**Migration Steps Performed:**
+1. **Preparation (Driver Removal):** Before exporting, I uninstalled the VirtualBox Guest Additions from all machines. Note: Since I had previously applied a GPO blocking the Control Panel for standard users on Windows 11, I bypassed the restriction by running the uninst.exe file directly from the C: drive as a Domain Administrator.
+2. **Exporting:** I exported each virtual machine from VirtualBox into the universal .ova (Open Virtualization Format) standard.
+3. **Importing:** I imported the .ova files into VMware Workstation Pro.
+4. **Network Reconfiguration:** To maintain the static IPs and domain communication, I replaced the default NAT network with a custom "LAN Segment" in VMware, acting as an isolated virtual switch.
+5. **Finalization:** I booted the machines and installed VMware Tools on all operating systems to ensure optimal performance and integration.
+
+## 7. Repository Files
+* /scripts/Create-AdUsers.ps1: My PowerShell script to import users.
+* /data/utenti.csv: The text file containing the fake employee data.
+* /images/: Screenshots of the completed work (Active Directory, OpManager alarms, Ubuntu terminal, 7-Zip deployment, Drive Z:, LAPS UI, and VMware Dashboard).
+
+## 8. Conclusion
+This project helped me understand how different operating systems (Windows and Linux) can communicate and work together in the same network. I learned the importance of using scripts to reduce manual labor, implementing advanced security measures like LAPS, and utilizing monitoring software to detect problems immediately. Finally, migrating the infrastructure taught me how to safely move enterprise environments across different virtualization platforms.
