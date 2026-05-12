@@ -78,14 +78,14 @@ To prevent hacker attacks that exploit standard local administrator passwords, I
 
 ## 5. Network Monitoring and Testing
 
-### 5.1 OpManager Monitoring
-To check that everything runs smoothly, I installed the OpManager software on the Windows 11 PC, using it as the network administrator station. I added the servers to the dashboard to monitor if they respond to Pings (ICMP) and if the website port (TCP) is open.
+### 5.1 Web-Based Monitoring (OpenManage)
+To check that everything runs smoothly, I used OpenManage via a web browser on the Windows 11 PC, acting as the network administrator station. I added the servers to the web dashboard to monitor if they respond to Pings (ICMP) and if the website port (TCP) is open.
 
 **Web Server Alarm Test:**
 To prove the monitoring works, I did a practical test:
 1. **Problem:** From the Ubuntu terminal, I intentionally stopped the website service using the command sudo systemctl stop nginx.
-2. **Result:** After a few minutes, the OpManager dashboard on Windows 11 showed a critical red alarm warning that the site was unreachable.
-3. **Solution:** I restarted Nginx, and the alarm on OpManager turned green automatically.
+2. **Result:** After a few minutes, the OpenManage web dashboard showed a critical red alarm warning that the site was unreachable.
+3. **Solution:** I restarted Nginx, and the alarm on OpenManage turned green automatically.
 
 ### 5.2 Offline Disaster Recovery Test
 To verify the LAPS configuration, I performed a disaster simulation:
@@ -109,7 +109,7 @@ This required careful preparation to prevent hardware conflicts (such as BSODs o
 ## 7. Repository Files
 * /scripts/Create-AdUsers.ps1: My PowerShell script to import users.
 * /data/utenti.csv: The text file containing the fake employee data.
-* /images/: Screenshots of the completed work (Active Directory, OpManager alarms, Ubuntu terminal, 7-Zip deployment, Drive Z:, LAPS UI, and VMware Dashboard).
+* /images/: Screenshots of the completed work (Active Directory, OpenManage dashboard alarms, Ubuntu terminal, 7-Zip deployment, Drive Z:, LAPS UI, and VMware Dashboard).
 
 ## 8. Conclusion
-This project helped me understand how different operating systems (Windows and Linux) can communicate and work together in the same network. I learned the importance of using scripts to reduce manual labor, implementing advanced security measures like LAPS, and utilizing monitoring software to detect problems immediately. Finally, migrating the infrastructure taught me how to safely move enterprise environments across different virtualization platforms.
+This project helped me understand how different operating systems (Windows and Linux) can communicate and work together in the same network. I learned the importance of using scripts to reduce manual labor, implementing advanced security measures like LAPS, and utilizing monitoring tools to detect problems immediately. Finally, migrating the infrastructure taught me how to safely move enterprise environments across different virtualization platforms.
