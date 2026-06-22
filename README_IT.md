@@ -7,10 +7,9 @@
 ## 1. Panoramica del Progetto
 Questo repository contiene il mio progetto personale in cui ho simulato da zero la rete informatica di una piccola azienda. L'obiettivo era mettere in pratica quello che ho studiato, creando una rete mista con server Windows e macchine Linux. 
 
-Mi sono concentrato sulla gestione centralizzata degli utenti tramite Active Directory, sulla creazione automatica degli account usando script, sul rilascio automatico dei software, sulla condivisione dei file e sul monitoraggio continuo. Inoltre, ho implementato protocolli di sicurezza avanzati per gli account amministratore locali e ho eseguito con successo una migrazione dell'intera infrastruttura tra hypervisor diversi.
+Mi sono concentrato sulla gestione centralizzata degli utenti tramite Active Directory, sulla creazione automatica degli account usando script, sul rilascio automatico dei software, sulla condivisione dei file e sul monitoraggio continuo. Inoltre, ho implementato protocolli di sicurezza avanzati per gli account amministratore locali.
 
-Inizialmente, ho utilizzato Oracle VirtualBox per creare l'ambiente su una rete NAT. Successivamente, ho migrato l'intero laboratorio su VMware Workstation Pro per testare un hypervisor di livello enterprise.
-
+Ho utilizzato Oracle VirtualBox per creare l'ambiente su una rete NAT.
 ## 2. Architettura di Rete
 La rete usa la sottorete 10.0.2.0/24, simulando la LAN dell'azienda "ACME Corp". Ho assegnato un indirizzo IP statico a ogni server per far sì che siano sempre raggiungibili.
 
@@ -97,7 +96,7 @@ Per verificare la configurazione di LAPS, ho eseguito una simulazione di disastr
 ## 6. File presenti nel Repository
 * /scripts/Create-AdUsers.ps1: Il mio script in PowerShell per importare gli utenti.
 * /data/utenti.csv: Il file di testo con i dati dei dipendenti fittizi.
-* /images/: Gli screenshot del lavoro completato (Active Directory, allarmi dashboard OpenManage, terminale Ubuntu, rilascio 7-Zip, Disco Z:, LAPS UI e Dashboard VMware).
+* /images/: Gli screenshot del lavoro completato (Active Directory, allarmi dashboard OpenManage, terminale Ubuntu, rilascio 7-Zip, Disco Z:, LAPS UI).
 
-## 8. Conclusioni
-Questo progetto mi è servito per capire come sistemi operativi diversi (Windows e Linux) possano comunicare e lavorare insieme nella stessa rete. Ho appreso l'importanza di utilizzare gli script per ridurre il lavoro manuale, di implementare misure di sicurezza avanzate come LAPS e di impiegare strumenti di monitoraggio per individuare immediatamente i problemi. Infine, la migrazione dell'infrastruttura mi ha insegnato come spostare in sicurezza ambienti aziendali tra piattaforme di virtualizzazione differenti.
+## 7. Conclusioni
+Questo progetto mi è servito per capire come sistemi operativi diversi (Windows e Linux) possano comunicare e lavorare insieme nella stessa rete. Ho appreso l'importanza di utilizzare gli script per ridurre il lavoro manuale, di implementare misure di sicurezza avanzate come LAPS e di impiegare strumenti di monitoraggio per individuare immediatamente i problemi.
