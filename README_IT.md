@@ -94,19 +94,7 @@ Per verificare la configurazione di LAPS, ho eseguito una simulazione di disastr
 3. Ho effettuato l'accesso al PC Windows 11 offline utilizzando l'account locale .\Administrator e la password LAPS.
 4. L'accesso è avvenuto con successo, dimostrando la capacità di mantenere il controllo amministrativo anche con il Domain Controller completamente irraggiungibile.
 
-## 6. Migrazione Cross-Hypervisor (da VirtualBox a VMware)
-Per fare un upgrade dell'ambiente di laboratorio, ho migrato con successo tutte le macchine virtuali da Oracle VirtualBox a VMware Workstation Pro. 
-
-Questa operazione ha richiesto un'attenta preparazione per prevenire conflitti hardware (come schermate blu su Windows o Kernel Panic su Linux) e problemi di rete (schede di rete fantasma).
-
-**Passaggi di Migrazione Eseguiti:**
-1. **Preparazione (Rimozione Driver):** Prima dell'esportazione, ho disinstallato le VirtualBox Guest Additions da tutte le macchine. Nota: avendo precedentemente applicato una GPO che bloccava il Pannello di Controllo per gli utenti standard su Windows 11, ho aggirato la restrizione eseguendo direttamente il file uninst.exe dal disco C: con i privilegi di Amministratore di Dominio.
-2. **Esportazione:** Ho esportato ogni macchina virtuale da VirtualBox nel formato universale .ova (Open Virtualization Format).
-3. **Importazione:** Ho importato i file .ova all'interno di VMware Workstation Pro.
-4. **Riconfigurazione di Rete:** Per mantenere gli IP statici e la comunicazione con il dominio, ho sostituito la rete NAT predefinita con un "LAN Segment" personalizzato in VMware, che funge da switch virtuale isolato.
-5. **Finalizzazione:** Ho avviato le macchine e installato i VMware Tools su tutti i sistemi operativi per garantire prestazioni e integrazione ottimali.
-
-## 7. File presenti nel Repository
+## 6. File presenti nel Repository
 * /scripts/Create-AdUsers.ps1: Il mio script in PowerShell per importare gli utenti.
 * /data/utenti.csv: Il file di testo con i dati dei dipendenti fittizi.
 * /images/: Gli screenshot del lavoro completato (Active Directory, allarmi dashboard OpenManage, terminale Ubuntu, rilascio 7-Zip, Disco Z:, LAPS UI e Dashboard VMware).
